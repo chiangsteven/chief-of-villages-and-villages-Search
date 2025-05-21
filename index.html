@@ -178,7 +178,8 @@
         "近5年獲獎紀錄",
         "經歷",
         "兼任\r\n職務",
-        "職業或經營\r\n事業(除里長外)"
+        "職業或經營\r\n事業(除里長外)",
+        "照片"
       ],
       [
         "板橋區",
@@ -193,7 +194,7 @@
         "內政部103年特優里長\r\n新北市103、110年特優里長\r\n",
         "土城鄉公所技士\r\n永和市公所技正\r\n板橋市公所技正\r\n省政府住宅及都市發展局副工程司\r\n板橋市公所主任秘書\r\n行政院公共工程委員會技正\r\n新北市里長聯誼會總幹事\r\n",
         "新北市里長聯誼會總幹事",
-        "無"
+        "無",
       ],
       [
         "板橋區",
@@ -25004,7 +25005,14 @@
 
       return mergedData;
     }
-    const mergedData = mergeByTwoKeys(areaData, adminData)
+
+    function addPicSrc(data) {
+      for (let i = 1; i < data.length; i++) {
+        data[i].push(`pic/${i}.jpg`);
+      }
+      return data;
+    }
+    const mergedData = mergeByTwoKeys(areaData, addPicSrc(adminData))
     console.log(mergedData.slice(0, 5)); // 測試合併結果
 
     function performSearch() {
@@ -25064,12 +25072,20 @@
 
           const label = document.createElement("strong");
           label.textContent = headers[j] + "：";
-
-          const content = document.createElement("span");
-          content.textContent = row[j] || "無";
-
           item.appendChild(label);
-          item.appendChild(content);
+          if (j !== headers.length - 1) {
+            const content = document.createElement("span");
+            content.textContent = row[j] || "無";
+            item.appendChild(content);
+
+          }
+          else {
+            const img = document.createElement("img");
+            img.src = row[j] || "無";
+            item.appendChild(img);
+          }
+
+
           card.appendChild(item);
         }
 
